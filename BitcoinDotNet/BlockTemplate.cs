@@ -1,10 +1,15 @@
 ﻿using System;
+using System.Collections.Generic;
+using BitcoinDotNet.Primitives;
+
 namespace BitcoinDotNet
 {
-    public class BlockTemplate
+    public struct BlockTemplate
     {
-        public BlockTemplate()
-        {
-        }
+        Block block;
+        List<long> transactionFees;
+        List<long> transactionSigOpsCost;
+        string vchCoinbaseCommitment;
     }
 }
+

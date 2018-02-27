@@ -6,5 +6,10 @@ namespace BitcoinDotNet.Primitives
         public TransactionIn()
         {
         }
+        public object ScriptWitness
+        {
+            get;
+            set;
+        }
     }
 }
