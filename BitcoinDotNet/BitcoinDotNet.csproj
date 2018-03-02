@@ -6,9 +6,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Bench\" />
+    <Compile Remove="Bench\**" />
+    <EmbeddedResource Remove="Bench\**" />
+    <None Remove="Bench\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Script\" />
-    <Folder Include="Primitives\" />
     <Folder Include="Wallet\" />
     <Folder Include="Policy\" />
   </ItemGroup>

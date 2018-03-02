@@ -10,17 +10,15 @@ namespace BitcoinDotNet.Primitives
         }
         public override string ToString()
         {
-            using (var s = new StreamWriter(""))
+            string str = $"Block(hash={GetHash().ToString()}, ver=0x{nVersion}, hashPrevBlock={hashPrevBlock.ToString()}, hashMerkleRoot={hashMerkleRoot.ToString()}, nTime={nTime}, nBits={nBits}, nNonce={nNonce}, vtx={Transactions.Count})\n";
+
+            foreach (var transaction in Transactions)
             {
-                s.Write($"Block(hash={GetHash().ToString()}, ver=0x{nVersion}, hashPrevBlock={hashPrevBlock.ToString()}, hashMerkleRoot={hashMerkleRoot.ToString()}, nTime={nTime}, nBits={nBits}, nNonce={nNonce}, vtx={Transactions.Count})\n");
-
-                foreach (var transaction in Transactions)
-                {
-                    s.Write($" {transaction.ToString()}" + Environment.NewLine);
-                }
-
-                return s.ToString();
+                str += ($" {transaction.ToString()}" + Environment.NewLine);
             }
+
+            return str;
+            
         }
     }
 }

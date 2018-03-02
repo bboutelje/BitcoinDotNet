@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Security.Cryptography;
+using System.Text;
 using BigMath;
 
 namespace BitcoinDotNet.Primitives
 {
-    public class Transaction
+    public class Transaction : ISerializable
     {
         private Int256 hash;
 
@@ -22,11 +25,12 @@ namespace BitcoinDotNet.Primitives
         // actually immutable; deserialization and assignment are implemented,
         // and bypass the constness. This is safe, as they update the entire
         // structure, including the hash.
-        public List<TransactionIn> transactionsIn;
-        public List<TransactionOut> transactionsOut;
-        int nVersion;
+        public List<TransactionIn> TransactionsIn { get; set; }
+        public List<TransactionOut> TransactionsOut { get; set; }
+        public int Version { get; set; }
         int nLockTime;
 
+        const int SERIALIZE_TRANSACTION_NO_WITNESS = 0x40000000;
 
         Int256 ComputeHash()
         {
@@ -39,24 +43,56 @@ namespace BitcoinDotNet.Primitives
         public override string ToString()
         {
             string str;
-            str = $"Transaction(hash={GetHash().ToString().Substring(0, 10)}, ver={nVersion}, vin.size={transactionsIn.Count}, " +
-                $"vout.size={transactionsOut.Count}, nLockTime={nLockTime})\n";
-            foreach (var transactionIn in transactionsIn)
+            str = $"Transaction(hash={GetHash().ToString().Substring(0, 10)}, ver={Version}, vin.size={TransactionsIn.Count}, " +
+                $"vout.size={TransactionsOut.Count}, nLockTime={nLockTime})\n";
+            foreach (var transactionIn in TransactionsIn)
             {
                 str += "    " + transactionIn.ToString() + "\n";
             }
-            foreach (var transactionIn in transactionsIn)
+            foreach (var transactionIn in TransactionsIn)
             {
                 str += "    " + transactionIn.ScriptWitness.ToString() + "\n";
             }
-            foreach (var transactionOut in transactionsOut)
-                str += "    " + transactionsOut.ToString() + "\n";
+            foreach (var transactionOut in TransactionsOut)
+                str += "    " + TransactionsOut.ToString() + "\n";
             return str;
         }
 
-        private object GetHash()
+        private byte[] GetHash()
         {
-            throw new NotImplementedException();
+            var mySHA256 = SHA256.Create();
+
+            byte[] byteArray = Encoding.UTF8.GetBytes(ToString());
+            MemoryStream stream = new MemoryStream(byteArray);
+
+            mySHA256.ComputeHash(stream);
+            return mySHA256.Hash;
+        }
+
+        public void SerializeTransaction(Transaction transaction, HashWriter s)
+        {
+            bool fAllowWitness = (s.GetVersion() & SERIALIZE_TRANSACTION_NO_WITNESS) == 0;
+
+            s.Write(transaction.Version);
+            
+
+            s.Write(transaction.TransactionsIn);
+            s.Write(transaction.TransactionsOut);
+            if (flags & 1 != 0)
+            {
+                for (size_t i = 0; i < tx.vin.size(); i++)
+                {
+                    s << tx.vin[i].scriptWitness.stack;
+                }
+            }
+            s << tx.nLockTime;
+        }
+
+        private bool HasWitness { get; set; }
+
+        public void Serialize(HashWriter os)
+        {
+            
         }
     }
 }

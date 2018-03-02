@@ -3,6 +3,10 @@ using BitcoinDotNet.Policy;
 
 namespace BitcoinDotNet.Wallet
 {
+    public class TransactionDestination
+    { }
+
+
     public class CoinControl
     {
         TransactionDestination destChange;

@@ -1,0 +1,4 @@
+C:\Users\bruce\Source\Repos\BitcoinDotNet\BitcoinDotNet\obj\Debug\netcoreapp2.0\BitcoinDotNet.csprojResolveAssemblyReference.cache
+C:\Users\bruce\Source\Repos\BitcoinDotNet\BitcoinDotNet\obj\Debug\netcoreapp2.0\BitcoinDotNet.csproj.CoreCompileInputs.cache
+C:\Users\bruce\Source\Repos\BitcoinDotNet\BitcoinDotNet\obj\Debug\netcoreapp2.0\BitcoinDotNet.AssemblyInfoInputs.cache
+C:\Users\bruce\Source\Repos\BitcoinDotNet\BitcoinDotNet\obj\Debug\netcoreapp2.0\BitcoinDotNet.AssemblyInfo.cs
